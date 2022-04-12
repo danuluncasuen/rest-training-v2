@@ -1,8 +1,11 @@
 package com.endava.restraining.entity;
 
+import lombok.Data;
+
 import javax.persistence.*;
 
 @Entity
+@Data
 public class OfficeEntity {
     @Id
     @Column(name = "id", nullable = false)
