@@ -21,4 +21,5 @@ public class WorkplaceEntity {
     public OfficeEntity getOffice() {
         return office;
     }
+
 }
