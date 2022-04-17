@@ -1,5 +1,6 @@
 package com.endava.restraining.rest;
 
+import com.endava.restraining.entity.dto.LocationDto;
 import com.endava.restraining.entity.dto.WorkplaceDto;
 import com.endava.restraining.service.WorkplaceService;
 import lombok.AllArgsConstructor;
@@ -27,6 +28,26 @@ public class WorkplaceRest {
     public ResponseEntity<Object> getAllWorkplaces(@RequestParam(required = false) Long limit) {
         try {
             return new ResponseEntity<>(workplaceService.getAll(limit), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Object> deleteWorkplace(@PathVariable Long id) {
+        try {
+            workplaceService.delete(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Object> updateWorkplace(@PathVariable Long id, @RequestBody WorkplaceDto workplaceDto) {
+        try {
+            workplaceService.update(id, workplaceDto);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
