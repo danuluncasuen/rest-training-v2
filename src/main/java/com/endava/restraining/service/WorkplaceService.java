@@ -4,7 +4,6 @@ import com.endava.restraining.dao.OfficeDAO;
 import com.endava.restraining.dao.WorkplaceDAO;
 import com.endava.restraining.entity.OfficeEntity;
 import com.endava.restraining.entity.WorkplaceEntity;
-import com.endava.restraining.entity.dto.LocationDto;
 import com.endava.restraining.entity.dto.WorkplaceDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -59,5 +58,19 @@ public class WorkplaceService {
             }
         }
         return workplaces;
+    }
+
+    public void delete(Long id) {
+        workplaceDAO.deleteById(id);
+    }
+
+    public void update(Long id, WorkplaceDto workplaceDto) {
+        WorkplaceEntity workplace = workplaceDAO.getById(id);
+        workplace.setFloor(workplaceDto.getFloor());
+        if(workplaceDto.getOfficeId() != null){
+            OfficeEntity office = officeDAO.getById(workplaceDto.getOfficeId());
+            workplace.setOffice(office);
+        }
+        workplaceDAO.save(workplace);
     }
 }
