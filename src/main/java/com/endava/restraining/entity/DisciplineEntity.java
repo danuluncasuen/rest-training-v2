@@ -7,14 +7,14 @@ import java.util.List;
 
 @Entity
 @Data
-public class DepartmentEntity {
+public class DisciplineEntity {
     @Id
-    @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
     private Long id;
-    
+
     private String name;
     
     @OneToMany
-    private List<UserEntity> users;
+    private List<DepartmentEntity> departmentEntityList;
 }
