@@ -1,5 +1,6 @@
 package com.endava.restraining.entity;
 
+
 import lombok.Data;
 
 import javax.persistence.*;
