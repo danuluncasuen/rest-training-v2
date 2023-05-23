@@ -14,10 +14,12 @@ public class UserEntity {
     
     @Column(nullable = false)
     private String name;
-    
+
+    @Column(name = "age")
     private Integer age;
     
     @OneToOne
+    @JoinColumn(name = "workplace")
     private WorkplaceEntity workplace;
     
 }
