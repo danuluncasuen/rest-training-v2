@@ -4,7 +4,6 @@ import com.endava.restraining.dao.LocationDAO;
 import com.endava.restraining.dao.OfficeDAO;
 import com.endava.restraining.entity.OfficeEntity;
 import com.endava.restraining.entity.dto.OfficeDto;
-import com.endava.restraining.util.OfficeConverter;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,26 +23,14 @@ public class OfficeService {
     }
     public List<OfficeDto> getAll(Long limit){
         List<OfficeDto> offices = new ArrayList<>();
-        List<OfficeEntity> daoOffices = officeDAO.findAll();
+        List<OfficeEntity> daoOffices = checkLimit(limit);
 
-        if (limit != null) {
-            for (int i=0; i<limit; i++) {
-                OfficeDto office = OfficeConverter.officeToDto(daoOffices.get(i));
-                offices.add(office);
-                if (i == daoOffices.size()-1) {
-                    break;
-                }
-            }
-        } else {
-            for (OfficeEntity daoOffice : daoOffices) {
-                OfficeDto office = OfficeConverter.officeToDto(daoOffice);
-                offices.add(office);
-            }
+        for(OfficeEntity daoOffice : daoOffices) {
+            OfficeDto office = officeToDto(daoOffice);
+            offices.add(office);
         }
         return offices;
     }
-
-
     public void delete(Long id) {
         officeDAO.deleteById(id);
     }
@@ -52,5 +39,19 @@ public class OfficeService {
         OfficeEntity office = officeDAO.getById(id);
         office.setLocation(locationDAO.getById(officeDto.getLocationId()));
         officeDAO.save(office);
+    }
+    public List<OfficeEntity> checkLimit(Long limit){
+        if(limit == null){
+            return officeDAO.findAll();
+        }
+        else {
+            return officeDAO.findAll(limit);
+        }
+    }
+    public OfficeDto officeToDto(OfficeEntity office){
+        OfficeDto officeDto = new OfficeDto();
+        officeDto.setId(office.getId());
+        officeDto.setLocationId(office.getLocation().getId());
+        return officeDto;
     }
 }
