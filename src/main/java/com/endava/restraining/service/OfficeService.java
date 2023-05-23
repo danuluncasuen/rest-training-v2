@@ -24,26 +24,22 @@ public class OfficeService {
     }
     public List<OfficeDto> getAll(Long limit){
         List<OfficeDto> offices = new ArrayList<>();
-        List<OfficeEntity> daoOffices = officeDAO.findAll();
+        List<OfficeEntity> daoOffices = checkLimit(limit);
 
-        if (limit != null) {
-            for (int i=0; i<limit; i++) {
-                OfficeDto office = OfficeConverter.officeToDto(daoOffices.get(i));
-                offices.add(office);
-                if (i == daoOffices.size()-1) {
-                    break;
-                }
-            }
-        } else {
-            for (OfficeEntity daoOffice : daoOffices) {
-                OfficeDto office = OfficeConverter.officeToDto(daoOffice);
-                offices.add(office);
-            }
+        for(OfficeEntity daoOffice : daoOffices) {
+            OfficeDto office = OfficeConverter.officeToDto(daoOffice);
+            offices.add(office);
         }
         return offices;
     }
-
-
+    public List<OfficeEntity> checkLimit(Long limit){
+            if(limit == null){
+                return officeDAO.findAll();
+            }
+            else {
+                return officeDAO.findAll(limit);
+            }
+    }
     public void delete(Long id) {
         officeDAO.deleteById(id);
     }
